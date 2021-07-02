@@ -5,38 +5,34 @@ const addBookHandler = (request, h) => {
     
     const { name, year, author, summary, publisher, pageCount, readPage, reading } = request.payload;
 
-    const id = nanoid(16)
-    const finished = pageCount === readPage
-    const insertedAt = new Date().toISOString();
-    const updatedAt = insertedAt;
-    const newBook = { name, year, author, summary, publisher, pageCount, readPage, reading, id, finished, insertedAt, updatedAt }
-    books.push(newBook)
-
     try {
-        const noName = books.filter((book)=>book.name === undefined);
-        if (noName) {
+        // const noName = books.filter((book)=>book.name === undefined);
+        if (name === undefined) {
             const response = h.response({
                 status: 'fail',
                 message: 'Gagal menambahkan buku. Mohon isi nama buku',
-                // data: false,
-                data: {
-                    bookName: name,
-                }
             })
             response.code(400);
             return response;
         }
 
-        const readCount = books.filter((book)=>book.readPage > book.pageCount);
-        if (readCount) {
+        // const readCount = books.filter((book)=>book.readPage > book.pageCount);
+        if (readPage > pageCount) {
             const response = h.response({
                 status: 'fail',
                 message: 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
-                data: false,
             })
             response.code(400);
             return response;
         } 
+
+        const id = nanoid(16)
+        const finished = pageCount === readPage
+        const insertedAt = new Date().toISOString();
+        const updatedAt = insertedAt;
+
+        const newBook = { name, year, author, summary, publisher, pageCount, readPage, reading, id, finished, insertedAt, updatedAt }
+        books.push(newBook)
 
         const isSuccess = books.filter((book)=> book.id === id).length > 0;
         if (isSuccess) {
@@ -56,6 +52,7 @@ const addBookHandler = (request, h) => {
             status: 'error',
             message: 'Buku gagal ditambahkan'
         })
+        console.log(response)
         response.code(500);
         return response;
     }
