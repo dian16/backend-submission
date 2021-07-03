@@ -74,7 +74,7 @@ const getAllBooksHandler = (request, h) => {
   }
 
   if (reading !== undefined) {
-    filterBook = books.filter((book) => book.reading === (reading === 1))
+    filterBook = books.filter((book) => book.reading === (reading === '1'))
     const response = h.response({
       status: 'success',
       data: {
@@ -90,7 +90,7 @@ const getAllBooksHandler = (request, h) => {
   }
 
   if (finished !== undefined) {
-    filterBook = books.filter((book) => book.finished === (finished === 1))
+    filterBook = books.filter((book) => book.finished === (finished === '1'))
     const response = h.response({
       status: 'success',
       data: {
